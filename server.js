@@ -207,13 +207,15 @@ app.get("/whoami", function(req, res) {
 });
 
 app.get("/login/ad", function(req, res) {
-    
+  
   // connect to AD
-  var config = JSON.parse(config.get("ad"));
-  var client = new ad(config);
+  var adConfig = config.get("ad");
+  var client = new ad(adConfig);
   
   // authenticate the user
   var credentials = JSON.parse(req.cookies.credentials);
+console.log("credentials.username: " + credentials.username);
+console.log("credentials.password: " + credentials.password);
   client.authenticate(credentials.username, credentials.password, function(err, auth) {
     if (err) {
       console.log("ERROR: " + JSON.stringify(err));

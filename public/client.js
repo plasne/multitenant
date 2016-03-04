@@ -15,8 +15,8 @@ $(document).ready(function() {
 
   $("#login-ad").click(function() {
     var credentials = {
-        username: $("#login-ad-username").text(),
-        password: $("#login-ad-password").text()
+        username: $("#login-ad-username").val(),
+        password: $("#login-ad-password").val()
     };
     $.cookie("credentials", JSON.stringify(credentials));
     window.location = "/login/ad";
