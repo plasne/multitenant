@@ -198,27 +198,6 @@ app.get('/token', function(req, res) {
   
 });
 
-app.get("/whoami", function(req, res) {
-  if (req.cookies.accessToken) {
-    nJwt.verify(req.cookies.accessToken, jwtKey, function(err, verified) {
-      if (err) {
-        console.log(err);
-      } else {
-        var role = "none";
-        if (verified.body.scope.indexOf("users") > -1) role = "user";
-        if (verified.body.scope.indexOf("admins") > -1) role = "admin";
-        res.send({
-          "id": verified.body.sub,
-          "role": role
-        });
-      }
-    });
-  } else {
-    console.log("not authorized");
-    res.status(401).send("Not Authorized: no access token was passed");
-  }
-});
-
 app.get("/login/ad", function(req, res) {
   
   // connect to AD
@@ -280,6 +259,28 @@ app.get("/login/ad", function(req, res) {
         res.status(401).send("Unknown authorization failure.");
     }
   });
+});
+
+app.get("/whoami", function(req, res) {
+  if (req.cookies.accessToken) {
+    nJwt.verify(req.cookies.accessToken, jwtKey, function(err, verified) {
+      if (err) {
+        console.log(err);
+      } else {
+        var role = "none";
+        if (verified.body.scope.indexOf("users") > -1) role = "user";
+        if (verified.body.scope.indexOf("admins") > -1) role = "admin";
+        res.send({
+          "id": verified.body.sub,
+          "role": role,
+          "rights": verified.body.rights
+        });
+      }
+    });
+  } else {
+    console.log("not authorized");
+    res.status(401).send("Not Authorized: no access token was passed");
+  }
 });
 
 app.listen(port);

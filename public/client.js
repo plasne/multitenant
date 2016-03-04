@@ -34,7 +34,7 @@ $(document).ready(function() {
     $.ajax({
       url: "/whoami",
       success: function(me) {
-        $("<div />").appendTo("body").text("id: " + me.id + " (" + me.role + ")");
+        $("<div />").appendTo("body").text("id: " + me.id + " (" + me.role + ") " + me.rights);
       },
       error: function(err) {
         $("<div />").appendTo("body").text("error: " + err);
