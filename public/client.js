@@ -14,6 +14,11 @@ $(document).ready(function() {
   });
 
   $("#login-ad").click(function() {
+    var credentials = {
+        username: $("#login-ad-username").text(),
+        password: $("#login-ad-password").text()
+    };
+    $.cookie("credentials", JSON.stringify(credentials));
     window.location = "/login/ad";
   });
 

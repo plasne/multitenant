@@ -212,14 +212,15 @@ app.get("/login/ad", function(req, res) {
   var config = JSON.parse(config.get("ad"));
   var client = new ad(config);
   
-  // authenticate the user 
-  client.authenticate("****", "****", function(err, auth) {
+  // authenticate the user
+  var credentials = JSON.parse(req.cookies.credentials);
+  client.authenticate(credentials.username, credentials.password, function(err, auth) {
     if (err) {
       console.log("ERROR: " + JSON.stringify(err));
     }
     if (auth) {
       console.log("Authenticated - " + JSON.stringify(auth));
-      client.getGroupMembershipForUser("****", function(err, groups) {
+      client.getGroupMembershipForUser(credentials.username, function(err, groups) {
         if (err) {
           console.log("ERROR: " + JSON.stringify(err));
         }
