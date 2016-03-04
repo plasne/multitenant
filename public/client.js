@@ -19,7 +19,15 @@ $(document).ready(function() {
         password: $("#login-ad-password").val()
     };
     $.cookie("credentials", JSON.stringify(credentials));
-    window.location = "/login/ad";
+    $.ajax({
+       url: "/login/ad",
+       success: function() {
+           $("<div />").appendTo("body").text("authenticated");
+       },
+       error: function(err) {
+           $("<div />").appendTo("body").text("error: " + err);
+       }
+    });
   });
 
   $("#whoami").click(function() {

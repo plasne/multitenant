@@ -149,7 +149,9 @@ app.get('/token', function(req, res) {
                 // build a list of group names
                 var membership = [];
                 details.forEach(function(group) {
-                  membership.push(group.displayName.replace("testauth_", ""));
+                  if (group.displayName.startsWith("testauth_")) {
+                    membership.push(group.displayName.replace("testauth_", ""));
+                  }
                 });
 
                 // build the claims
@@ -214,27 +216,48 @@ app.get("/login/ad", function(req, res) {
   
   // authenticate the user
   var credentials = JSON.parse(req.cookies.credentials);
-console.log("credentials.username: " + credentials.username);
-console.log("credentials.password: " + credentials.password);
   client.authenticate(credentials.username, credentials.password, function(err, auth) {
     if (err) {
-      console.log("ERROR: " + JSON.stringify(err));
+        res.status(401).send(JSON.stringify(err));
     }
     if (auth) {
-      console.log("Authenticated - " + JSON.stringify(auth));
       client.getGroupMembershipForUser(credentials.username, function(err, groups) {
         if (err) {
-          console.log("ERROR: " + JSON.stringify(err));
+            res.status(500).send(JSON.stringify(err));
         }
         if (groups) {
-          console.log("GROUPS: " + JSON.stringify(groups));
+            
+            // build a list of group names
+            var membership = [];
+            groups.forEach(function(group) {
+                if (group.cn.startsWith("testauth_")) {
+                    membership.push(group.cn.replace("testauth_", ""));
+                }
+            });
+
+            // build the claims
+            var claims = {
+                iss: "http://testauth.plasne.com",
+                sub: credentials.username,
+                scope: membership
+            };
+
+            // build the JWT
+            var jwt = nJwt.create(claims, jwtKey);
+            jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
+            res.cookie("accessToken", jwt.compact(), {
+                maxAge: 4 * 60 * 60 * 1000
+            });
+
+            // return to the client
+            res.status(200).end();
+
         }
       });
     } else {
-      console.log("Authentication failed.");
+        res.status(401).send("Unknown authorization failure.");
     }
   });
-  res.send("done");
 });
 
 app.listen(port);
