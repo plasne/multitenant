@@ -1,0 +1,32 @@
+{
+  "name": "testauth",
+  "version": "1.0.0",
+  "description": "A multi-tenant Azure AD Node.js sample",
+  "main": "server.js",
+  "dependencies": {
+    "activedirectory": "^0.7.2",
+    "adal-node": "^0.1.18",
+    "config": "^1.19.0",
+    "cookie-parser": "^1.4.1",
+    "crypto": "^0.0.3",
+    "express": "^4.13.4",
+    "njwt": "^0.2.3",
+    "q": "^1.4.1",
+    "request": "^2.69.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plasne/multitenant.git"
+  },
+  "author": "Peter Lasne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plasne/multitenant/issues"
+  },
+  "homepage": "https://github.com/plasne/multitenant#readme"
+}
