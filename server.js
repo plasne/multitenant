@@ -154,11 +154,22 @@ app.get('/token', function(req, res) {
                   }
                 });
 
+                // define rights
+                var rights = [];
+                if (membership.indexOf("admins") > -1) {
+                    rights.push("can admin");
+                    rights.push("can edit");
+                    rights.push("can view");
+                } else if (membership.indexOf("users") > -1) {
+                    rights.push("can view");
+                }
+    
                 // build the claims
                 var claims = {
-                  iss: "http://testauth.plasne.com",
-                  sub: tokenResponse.userId,
-                  scope: membership
+                    iss: "http://testauth.plasne.com",
+                    sub: tokenResponse.userId,
+                    scope: membership,
+                    rights: rights
                 };
 
                 // build the JWT
@@ -235,11 +246,22 @@ app.get("/login/ad", function(req, res) {
                 }
             });
 
+            // define rights
+            var rights = [];
+            if (membership.indexOf("admins") > -1) {
+                rights.push("can admin");
+                rights.push("can edit");
+                rights.push("can view");
+            } else if (membership.indexOf("users") > -1) {
+                rights.push("can view");
+            }
+ 
             // build the claims
             var claims = {
                 iss: "http://testauth.plasne.com",
                 sub: credentials.username,
-                scope: membership
+                scope: membership,
+                rights: rights
             };
 
             // build the JWT
