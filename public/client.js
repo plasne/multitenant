@@ -41,5 +41,37 @@ $(document).ready(function() {
       }
     });
   });
-    
+  
+  $("#webapi").click(function() {
+    $.ajax({
+      url: "https://pelasne-testauth.azurewebsites.net/hello",
+      headers: {
+        "Authorization": "Bearer " + $.cookie("accessToken")
+      },
+      dataType: "json",
+      success: function(reply) {
+        $("<div />").appendTo("body").text(reply.message);
+      },
+      error: function(err) {
+        $("<div />").appendTo("body").text("error: " + err);
+      }
+    });
+  });
+
+  $("#wcfapi").click(function() {
+    $.ajax({
+      url: "http://pelasne-testauth.azurewebsites.net/wcfservice.svc/hello",
+      headers: {
+        "Authorization": "Bearer " + $.cookie("accessToken")
+      },
+      dataType: "json",
+      success: function(reply) {
+        $("<div />").appendTo("body").text(reply.message);
+      },
+      error: function(err) {
+        $("<div />").appendTo("body").text("error: " + err);
+      }
+    });
+  });
+  
 });
