@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="TestAuthNET.WCFService" CodeBehind="WCFService.svc.cs" %>
