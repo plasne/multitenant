@@ -1,0 +1,21 @@
+{
+  "web": {
+    "port": 80
+  },
+  "aad": {
+    "authority": "https://login.windows.net/common",
+    "clientId": "########-####-####-####-############",
+    "clientSecret": "######################################",
+    "redirectUri": "http://domain.com/token",
+    "resource": "https://graph.windows.net/"
+  },
+  "ad": {
+    "url": "ldap://###.###.###.###:389",
+    "baseDN": "dc=domain,dc=com",
+    "username": "admin@domain.com",
+    "password": "password"
+  },
+  "jwt": {
+    "key": "super-secret-key"
+  }
+}
