@@ -45,6 +45,12 @@ You need to define a configuration file for the server. You can find a sample at
 - jwt
   - key: You should generate a long, random string of characters to use as the symmetric key for all your backend services. They will need this key to decrypt the JWT, you should never store this in an unsecure location or send it to a client.
 
+## Security
+**This sample shows the server running on HTTP, but you should always host a service like this for authentication using HTTPS.**
+
+## Configure DNS
+In order for the authentication flow to work your server must be hosted on the verified domain that you specified when creating the application. Therefore you must register the FQDN for your application with your DNS provider so that it can route properly to your server.
+
 ## Run the server
 You can run the server on any system that can run Node.js.
 
@@ -60,4 +66,4 @@ You can run the server on any system that can run Node.js.
 If you are hosting the server in Azure, make sure you check your Network Security Groups (on the subnet that your VM is hosted in and on the NIC assigned to your VM) are configured to allow the incoming port.
 
 ## Connect via a brower
-To connect via a browser, you can go to http://
+To connect via a browser, you can go to the URL you specified for your application. To get more information about the JavaScript client, look [here](javascript.md)
