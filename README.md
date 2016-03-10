@@ -1,4 +1,4 @@
-# Mulit-Tenant AuthN/AuthZ Sample
+# Multi-Tenant AuthN/AuthZ Sample
 This idea behind this multi-tenant application is that one company (who I will refer to as the **provider**) owns a set of web services that they host in their domain and have registered in their Azure Active Directory. They have multiple technologies that they use to host these services (Node.js, .NET WCF, .NET Web API, Java, etc.).
 
 There are multiple other companies (who I will refer to as **consumers**) that will consume those services using a variety of clients (HTML/JS, mobile apps, WPF apps, etc.). These consumers will manage their own users and groups via their own Active Directory systems.
