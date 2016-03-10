@@ -1,15 +1,13 @@
 #Create an Azure AD Application
 The primary method of authentication for this sample is Azure AD. Specifically, this assumes you will create an application that is multi-tenant, allowing your customers to authenticate using their own Azure AD and managing their own users and group membership.
 
-1. Test
-2. test2
-
 All of these steps are done in the Azure AD Directory of the company that owns the multi-tenant application, the customers of your application do not go through these steps.
 
 ##Verify your domain
 You can only host a multi-tenant application on a domain that you own and have verified. To verify you own the domain you must add it to the Azure AD Directory that will own your application. If you have already verified your domain (often the case if you are an Office 365 customer), then you don't need to do these steps.
 
 To verify the domain, follow these steps:
+
 1. Login to https://manage.windowsazure.com.
 2. Click on "Active Directory" in the left-hand navigation pane.
 3. Click on the Directory that will own the application.
