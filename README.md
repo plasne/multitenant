@@ -17,8 +17,8 @@ There are a variety of pieces provided:
 ## Samples
 Click on any of the following to understand the specifics of the configuration:
 - [Node.js server](/docs/nodejs.md)
-- JavaScript client
+- [JavaScript client](/docs/javascript.md)
+- [WebAPI client](/docs/webapi.md)
 - WCF client
-- WebAPI client
 - WPF client
 - Trusted WPF client
