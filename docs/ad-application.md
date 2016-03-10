@@ -1,6 +1,9 @@
 #Create an Azure AD Application
 The primary method of authentication for this sample is Azure AD. Specifically, this assumes you will create an application that is multi-tenant, allowing your customers to authenticate using their own Azure AD and managing their own users and group membership.
 
+1. Test
+2. test2
+
 All of these steps are done in the Azure AD Directory of the company that owns the multi-tenant application, the customers of your application do not go through these steps.
 
 ##Verify your domain
