@@ -39,6 +39,8 @@ To create a new Azure AD application follow these steps:
 13. Make note of the "Client ID", you will use that when you configure your server and clients.
 14. "Select duration" to create a key (also called a Client Secret).
 15. Under "permissions to other applications", "Windows Azure Active Directory", "Delegated Permissions", check "Read all groups" and "Sign in and read user profile".
+16. Click on the "Save" button at the bottom.
+17. Copy the key that is generated after save under "keys". This is the Client Secret and you will need it for your server implementation. **IMPORTANT:** You cannot get this after your leave the page, so you must copy it now or create a new key later.
 
 [//]: # (Read directory data might also be required?)
 [//]: # (Verify that Read all groups is actually required?)
