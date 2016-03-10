@@ -25,6 +25,11 @@ These are dependencies that will get installed when the above components are ins
 There are some files that are specifically related to making this work:
 
 * Global.asax - There are 2 things that are done in the global.asax: (1) I removed the Controller suffix requirement for the Web API controllers (this is a personal preference, not a requirement), and (2) I enabled the solution to work with CORS.
+ 
 * Startup.cs - This is responsible for the Web API startup processes, specifically it attaches a JWT authentication component.
+ 
 * Web.config - There are custom headers required for CORS to work.
+
 * WebAPIService.cs - The files that contains any endpoints.
+
+## CORS
