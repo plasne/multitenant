@@ -44,3 +44,17 @@ You need to define a configuration file for the server. You can find a sample at
   - password: This should be the password for the service account.
 - jwt
   - key: You should generate a long, random string of characters to use as the symmetric key for all your backend services. They will need this key to decrypt the JWT, you should never store this in an unsecure location or send it to a client.
+
+## Run the server
+You can run the server on any system that can run Node.js.
+
+- Ubuntu
+  - To install Node.js: https://nodejs.org/en/download/package-manager/ 
+  - To run the server: nodejs server.js
+  - If you are using a port that requires elevation, you might do: sudo nodejs server.js
+- Windows
+   - To install Node.js: https://nodejs.org/en/download/ 
+   - To run the server: node server.js
+   - Make sure the Windows Firewall will allow incoming traffic on that port
+
+If you are hosting the server in Azure, make sure you check your Network Security Groups (on the subnet that your VM is hosted in and on the NIC assigned to your VM) are configured to allow the incoming port.
