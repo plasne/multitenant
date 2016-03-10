@@ -95,7 +95,7 @@ function getGroupMembershipForUser(token) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
     } else {
-        deferred.reject(error);
+        deferred.reject(body);
     }
   });
 
@@ -187,7 +187,7 @@ app.get('/token', function(req, res) {
             });
             
         }, function(msg) {
-            res.status(401).send("Unauthorized (membership): " + msg);
+            res.status(401).send("Unauthorized (" + tokenResponse.userId + ") (membership): " + msg);
         });
         
     }, function(msg) {
