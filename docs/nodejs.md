@@ -58,3 +58,6 @@ You can run the server on any system that can run Node.js.
    - Make sure the Windows Firewall will allow incoming traffic on that port
 
 If you are hosting the server in Azure, make sure you check your Network Security Groups (on the subnet that your VM is hosted in and on the NIC assigned to your VM) are configured to allow the incoming port.
+
+## Connect via a brower
+To connect via a browser, you can go to http://
