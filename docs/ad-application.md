@@ -23,6 +23,7 @@ To verify the domain, follow these steps:
 Once you have a verified domain you can add applications to it.
 
 To create a new Azure AD application follow these steps:
+
 1. Login to https://manage.windowsazure.com.
 2. Click on "Active Directory" in the left-hand navigation pane.
 3. Click on the Directory that will own the application.
@@ -37,4 +38,6 @@ To create a new Azure AD application follow these steps:
 12. Click "yes" under Application is multi-tenant".
 13. Make note of the "Client ID", you will use that when you configure your server and clients.
 14. "Select duration" to create a key (also called a Client Secret).
-15. Under "permissions to other applications", "Windows Azure Active Directory", "Delegated Permissions", check "Read all groups", "Read directory data", and "Sign in and read user profile".
+15. Under "permissions to other applications", "Windows Azure Active Directory", "Delegated Permissions", check "Read all groups" and "Sign in and read user profile".
+[//]: # Read directory data might also be required?
+[//]: # Verify that Read all groups is actually required?
