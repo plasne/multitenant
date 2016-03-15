@@ -9,7 +9,8 @@ var qs = require("querystring");
 var cookieParser = require("cookie-parser");
 var nJwt = require("njwt");
 var ad = require("activedirectory");
-var AuthenticationContext = require('adal-node').AuthenticationContext;
+var AuthenticationContext = require("adal-node").AuthenticationContext;
+var aadutils = require("./aadutils.js");
 
 // get the configuration
 var port = config.get("web.port");
@@ -95,7 +96,7 @@ function getGroupMembershipForUser(token) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
     } else {
-        deferred.reject(body);
+        deferred.reject(JSON.stringify(body));
     }
   });
 
@@ -121,7 +122,7 @@ function getGroupDetails(token, domain, groups) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
     } else {
-        deferred.reject(error);
+        deferred.reject(JSON.stringify(body));
     }
   });
   
@@ -138,7 +139,7 @@ app.get('/token', function(req, res) {
     
     // get the access token
     getAccessTokenFromCode(req.query.code).then(function(tokenResponse) {
-        
+
         // get the membership for the user
         getGroupMembershipForUser(tokenResponse.accessToken).then(function(groups) {
             
@@ -259,6 +260,36 @@ app.get("/login/ad", function(req, res) {
         res.status(401).send("Unknown authorization failure.");
     }
   });
+});
+
+app.get("/login/token", function(req, res) {
+
+  var token = req.get("Authorization").replace("Bearer ", "");
+
+  // the key URL comes from: https://login.microsoftonline.com/<tenant id>/.well-known/openid-configuration
+  var options = {
+    uri: "https://login.microsoftonline.com/common/discovery/keys",
+    json: true
+  };
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+
+      // try each key
+      body.keys.each(function(key, i) {
+        var modulus = new Buffer(key.n, "base64");
+        var exponent = new Buffer(key.e, "base64");
+        var pem = aadutils.rsaPublicKeyPem(modulus, exponent);
+        nJwt.verify(token, pem, "RS256", function(err, verified) {
+        });
+      });
+console.log(body);
+    } else {
+      console.log("error");
+    }
+  });
+
+  res.status(200).end();
+ 
 });
 
 app.get("/whoami", function(req, res) {
