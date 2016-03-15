@@ -1,5 +1,5 @@
 # WPF client
-If the provider wants WCF clients to connect to the server, then this sample demonstrates how to do that. This is a very different pattern than the other samples so the next section will explain why.
+If the provider wants WPF clients (desktop client) to connect to the server, then this sample demonstrates how to do that. This is a very different pattern than the other samples so the next section will explain why.
 
 ## OAuth Client Types
 The OAuth specification defines 2 types of clients: "confidential" and "public". A web site is a confidential client because only the server administrator can get to it and so any secrets (keys, certificates, etc.) are considered safe. A desktop or native mobile client is a public client because there are any number of ways in which it may become compromised and give up secrets.
