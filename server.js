@@ -321,29 +321,19 @@ app.get("/login/token", function(req, res) {
     // verify the existing token
     var token = req.get("Authorization").replace("Bearer ", "");
     verifyToken(token).then(function(verified) {
-        console.log("verified as : " + verified.body.upn);
         
-        // native apps cannot do admin consent, but now that we have verified the existing token, we can create a new one
-        var authenticationContext = new AuthenticationContext(authority);
-console.log(config.get("aad.username"));
-console.log(config.get("aad.password"));
-        authenticationContext.acquireTokenWithUsernamePassword(resource, config.get("aad.username"), config.get("aad.password"), clientId, function(err, tokenResponse) {
-            if (err) {
-console.log("1: " + err);
-                res.status(401).send("Unauthorized (client creds): " + err);
-            } else {
-console.log("3: success");      
-                // generate a JWT (access token from the service principal but UPN from the original token)
-                getJwtFromToken(tokenResponse.accessToken, verified.body.upn).then(function(jwt) {
-                    res.status(200).send({ "accessToken": jwt });
-                }, function(msg) {
-console.log("2: " + msg);
-                    res.status(401).send("Unauthorized (jwt): " + msg);
-                });
+        // native apps cannot do admin consent, so we cannot reach back into the user's AAD, but we can generate a JWT without any special
+        //   authorization and assume we do that in our application
+        var claims = {
+            iss: "http://testauth.plasne.com",
+            sub: verified.body.upn
+        };
 
-            }
-        });
-        
+        // build the JWT
+        var jwt = nJwt.create(claims, jwtKey);
+        jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
+        res.status(200).send({ "accessToken": jwt });
+
     }, function(msg) {
         res.status(401).send(msg);
     });
