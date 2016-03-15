@@ -20,5 +20,5 @@ Click on any of the following to understand the specifics of the configuration:
 - [JavaScript client](/docs/javascript.md)
 - [WebAPI client](/docs/webapi.md)
 - WCF client
-- WPF client
+- [WPF client](/docs/wpf.md)
 - Trusted WPF client
