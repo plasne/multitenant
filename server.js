@@ -342,7 +342,10 @@ app.get("/login/token", function(req, res) {
 
 // this is a service end-point that can verify the JWT coming from the client
 app.get("/whoami", function(req, res) {
-  if (req.cookies.accessToken) {
+  var token;
+  if (req.cookies.accessToken) token = req.cookies.accessToken;
+  if (req.get("Authorization")) token = req.get("Authorization").replace("Bearer ", "");
+  if (token) {
     nJwt.verify(req.cookies.accessToken, jwtKey, function(err, verified) {
       if (err) {
         console.log(err);
@@ -353,7 +356,7 @@ app.get("/whoami", function(req, res) {
         res.send({
           "id": verified.body.sub,
           "role": role,
-          "rights": verified.body.rights
+          "rights": (verified.body.rights) ? verified.body.rights : "none"
         });
       }
     });
