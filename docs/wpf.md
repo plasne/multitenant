@@ -1,4 +1,4 @@
-# WCF client
+# WPF client
 If the provider wants WCF clients to connect to the server, then this sample demonstrates how to do that. This is a very different pattern than the other samples so the next section will explain why.
 
 ## OAuth Client Types
