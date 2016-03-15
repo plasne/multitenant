@@ -21,7 +21,9 @@ There were a number of Node.js components used in this solution:
 * [cookie-parser](https://www.npmjs.com/package/cookie-parser) - cookie management
 * [njwt](https://www.npmjs.com/package/njwt) - JSON Web Tokens
 * [ad](https://www.npmjs.com/package/activedirectory) - AD interface
-* [adal-node](https://www.npmjs.com/package/adal-node) - Azure AD AuthN
+* [adal-node](https://www.npmjs.com/package/adal-node) - Azure AD Auth
+
+Also, for using the WPF sample which must verify an existing token via a public key, then aadutils.js is used to create PEM.
 
 ## Create an Azure AD Application
 The first step is to create an Azure AD Application. You can find those instructions [here](ad-application.md).
