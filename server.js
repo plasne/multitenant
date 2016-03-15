@@ -129,6 +129,58 @@ function getGroupDetails(token, domain, groups) {
   return deferred.promise;
 }
 
+function getJwtFromToken(token, userId) {
+    var deferred = q.defer();
+    
+    // get the membership for the user
+    getGroupMembershipForUser(token).then(function(groups) {
+        
+        // get the details for each group
+        var domain = userId.split("@")[1];
+        getGroupDetails(token, domain, groups).then(function(details) {
+            
+            // build a list of group names
+            var membership = [];
+            details.forEach(function(group) {
+                if (group.displayName.startsWith("testauth_")) {
+                membership.push(group.displayName.replace("testauth_", ""));
+                }
+            });
+
+            // define rights
+            var rights = [];
+            if (membership.indexOf("admins") > -1) {
+                rights.push("can admin");
+                rights.push("can edit");
+                rights.push("can view");
+            } else if (membership.indexOf("users") > -1) {
+                rights.push("can view");
+            }
+
+            // build the claims
+            var claims = {
+                iss: "http://testauth.plasne.com",
+                sub: userId,
+                scope: membership,
+                rights: rights
+            };
+
+            // build the JWT
+            var jwt = nJwt.create(claims, jwtKey);
+            jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
+            deferred.resolve(jwt.compact());
+            
+        }, function(msg) {
+            deferred.reject(msg);
+        });
+        
+    }, function(msg) {
+        deferred.reject(msg);
+    });
+    
+    return deferred.promise;
+}
+
 // get an authorization token
 app.get('/token', function(req, res) {
 
@@ -140,65 +192,28 @@ app.get('/token', function(req, res) {
     // get the access token
     getAccessTokenFromCode(req.query.code).then(function(tokenResponse) {
 
-        // get the membership for the user
-        getGroupMembershipForUser(tokenResponse.accessToken).then(function(groups) {
-            
-            // get the details for each group
-            var domain = tokenResponse.userId.split("@")[1];
-            getGroupDetails(tokenResponse.accessToken, domain, groups).then(function(details) {
-                
-                // build a list of group names
-                var membership = [];
-                details.forEach(function(group) {
-                  if (group.displayName.startsWith("testauth_")) {
-                    membership.push(group.displayName.replace("testauth_", ""));
-                  }
-                });
-
-                // define rights
-                var rights = [];
-                if (membership.indexOf("admins") > -1) {
-                    rights.push("can admin");
-                    rights.push("can edit");
-                    rights.push("can view");
-                } else if (membership.indexOf("users") > -1) {
-                    rights.push("can view");
-                }
-    
-                // build the claims
-                var claims = {
-                    iss: "http://testauth.plasne.com",
-                    sub: tokenResponse.userId,
-                    scope: membership,
-                    rights: rights
-                };
-
-                // build the JWT
-                var jwt = nJwt.create(claims, jwtKey);
-                jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
-                res.cookie("accessToken", jwt.compact(), {
-                  maxAge: 4 * 60 * 60 * 1000
-                });
-
-                // return to the client
-                res.redirect("/client.html");
-                
-            }, function(msg) {
-                res.status(401).send("Unauthorized (details): " + msg);
-            });
-            
-        }, function(msg) {
-            res.status(401).send("Unauthorized (" + tokenResponse.userId + ") (membership): " + msg);
+      // generate a JWT
+      getJwtFromToken(tokenResponse.accessToken, tokenResponse.userId).then(function(jwt) {
+          
+        // return the JWT to the client
+        res.cookie("accessToken", jwt, {
+          maxAge: 4 * 60 * 60 * 1000 // 4 hours
         });
+        res.redirect("/client.html");
+
+      }, function(msg) {
+        res.status(401).send("Unauthorized (jwt): " + msg);
+      });
         
     }, function(msg) {
-        res.status(401).send("Unauthorized (access token): " + msg);
+      res.status(401).send("Unauthorized (access token): " + msg);
     });
 
   }
   
 });
 
+// login to a traditional Active Directory
 app.get("/login/ad", function(req, res) {
   
   // connect to AD
@@ -262,36 +277,61 @@ app.get("/login/ad", function(req, res) {
   });
 });
 
-app.get("/login/token", function(req, res) {
+function verifyToken(token) {
+  var deferred = q.defer();  
 
-  var token = req.get("Authorization").replace("Bearer ", "");
-
-  // the key URL comes from: https://login.microsoftonline.com/<tenant id>/.well-known/openid-configuration
+  // get the public keys
   var options = {
-    uri: "https://login.microsoftonline.com/common/discovery/keys",
+    uri: "https://login.microsoftonline.com/common/discovery/keys", // the key URL comes from: https://login.microsoftonline.com/<tenantId>/.well-known/openid-configuration
     json: true
   };
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
 
-      // try each key
+      // try each public key
       body.keys.each(function(key, i) {
         var modulus = new Buffer(key.n, "base64");
         var exponent = new Buffer(key.e, "base64");
         var pem = aadutils.rsaPublicKeyPem(modulus, exponent);
         nJwt.verify(token, pem, "RS256", function(err, verified) {
+            if (err) {
+                deferred.reject("Unauthorized (verify token): " + err);
+            } else {
+                deferred.resolve(verified);
+            }
         });
       });
-console.log(body);
+
     } else {
-      console.log("error");
+        deferred.reject("Unauthorized (get keys): " + error);
     }
   });
+  
+  return deferred;
+}
 
-  res.status(200).end();
+// the user has logged in to Azure AD and obtained a token already, in that case, validate the token and generate the JWT
+app.get("/login/token", function(req, res) {
+    
+    // verify the existing token
+    var token = req.get("Authorization").replace("Bearer ", "");
+    verifyToken(token).then(function(verified) {
+        console.log("verified as : " + verified.body.upn);
+        
+        // generate a JWT
+        getJwtFromToken(token, verified.body.upn).then(function(jwt) {
+            res.status(200).send({ "accessToken": jwt });
+        }, function(msg) {
+            res.status(401).send("Unauthorized (jwt): " + msg);
+        });
+
+    }, function(msg) {
+        res.status(401).send(msg);
+    });
  
 });
 
+// this is a service end-point that can verify the JWT coming from the client
 app.get("/whoami", function(req, res) {
   if (req.cookies.accessToken) {
     nJwt.verify(req.cookies.accessToken, jwtKey, function(err, verified) {
