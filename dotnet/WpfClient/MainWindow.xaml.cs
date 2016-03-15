@@ -6,17 +6,13 @@ using System.Windows;
 
 namespace WpfClient
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
 
         private Authorization auth = null;
 
         private const string authority = "https://login.windows.net/common";
-        //private const string resourceId = "https://graph.windows.net/";
-        //private const string resourceId = "36bda7c5-cc23-4618-9e09-e710b2357818";
         private const string resourceId = "http://testauth.plasne.com/";
         private const string clientId = "e54b04c6-6e2b-45e8-98eb-78b5616276d2";
         private const string redirectUri = "http://testauthwpf";
