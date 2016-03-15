@@ -79,11 +79,11 @@ function getAccessTokenFromCode(code) {
 }
 
 // query the customer's Azure AD to find out what groups the user is a member of
-function getGroupMembershipForUser(token) {
+function getGroupMembershipForUser(token, userId) {
   var deferred = q.defer();
 
   var options = {
-    uri: "https://graph.windows.net/me/getMemberGroups?api-version=1.6",
+    uri: "https://graph.windows.net/" + userId + "/getMemberGroups?api-version=1.6",
     json: true,
     headers: {
       "Authorization": "bearer " + token
@@ -96,6 +96,7 @@ function getGroupMembershipForUser(token) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
     } else {
+console.log("failed in group");
         deferred.reject(JSON.stringify(body));
     }
   });
@@ -133,7 +134,7 @@ function getJwtFromToken(token, userId) {
     var deferred = q.defer();
     
     // get the membership for the user
-    getGroupMembershipForUser(token).then(function(groups) {
+    getGroupMembershipForUser(token, userId).then(function(groups) {
         
         // get the details for each group
         var domain = userId.split("@")[1];
@@ -289,7 +290,7 @@ function verifyToken(token) {
     if (!error && response.statusCode == 200) {
 
       // try each public key
-      body.keys.each(function(key, i) {
+      body.keys.forEach(function(key) {
         var modulus = new Buffer(key.n, "base64");
         var exponent = new Buffer(key.e, "base64");
         var pem = aadutils.rsaPublicKeyPem(modulus, exponent);
@@ -311,7 +312,7 @@ function verifyToken(token) {
     }
   });
   
-  return deferred;
+  return deferred.promise;
 }
 
 // the user has logged in to Azure AD and obtained a token already, in that case, validate the token and generate the JWT
@@ -324,15 +325,19 @@ app.get("/login/token", function(req, res) {
         
         // native apps cannot do admin consent, but now that we have verified the existing token, we can create a new one
         var authenticationContext = new AuthenticationContext(authority);
-        authenticationContext.acquireTokenWithClientCredentials(resource, clientId, clientSecret, function(err, tokenResponse) {
+console.log(config.get("aad.username"));
+console.log(config.get("aad.password"));
+        authenticationContext.acquireTokenWithUsernamePassword(resource, config.get("aad.username"), config.get("aad.password"), clientId, function(err, tokenResponse) {
             if (err) {
+console.log("1: " + err);
                 res.status(401).send("Unauthorized (client creds): " + err);
             } else {
-        
+console.log("3: success");      
                 // generate a JWT (access token from the service principal but UPN from the original token)
                 getJwtFromToken(tokenResponse.accessToken, verified.body.upn).then(function(jwt) {
                     res.status(200).send({ "accessToken": jwt });
                 }, function(msg) {
+console.log("2: " + msg);
                     res.status(401).send("Unauthorized (jwt): " + msg);
                 });
 
