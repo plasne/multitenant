@@ -332,7 +332,7 @@ app.get("/login/token", function(req, res) {
         // build the JWT
         var jwt = nJwt.create(claims, jwtKey);
         jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
-        res.status(200).send({ "accessToken": jwt });
+        res.status(200).send({ "accessToken": jwt.compact() });
 
     }, function(msg) {
         res.status(401).send(msg);
@@ -346,13 +346,15 @@ app.get("/whoami", function(req, res) {
   if (req.cookies.accessToken) token = req.cookies.accessToken;
   if (req.get("Authorization")) token = req.get("Authorization").replace("Bearer ", "");
   if (token) {
-    nJwt.verify(req.cookies.accessToken, jwtKey, function(err, verified) {
+    nJwt.verify(token, jwtKey, function(err, verified) {
       if (err) {
         console.log(err);
       } else {
         var role = "none";
-        if (verified.body.scope.indexOf("users") > -1) role = "user";
-        if (verified.body.scope.indexOf("admins") > -1) role = "admin";
+        if (verified.body.scope) {
+          if (verified.body.scope.indexOf("users") > -1) role = "user";
+          if (verified.body.scope.indexOf("admins") > -1) role = "admin";
+        }
         res.send({
           "id": verified.body.sub,
           "role": role,
@@ -361,7 +363,6 @@ app.get("/whoami", function(req, res) {
       }
     });
   } else {
-    console.log("not authorized");
     res.status(401).send("Not Authorized: no access token was passed");
   }
 });
