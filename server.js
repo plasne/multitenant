@@ -297,7 +297,11 @@ function verifyToken(token) {
             if (err) {
                 deferred.reject("Unauthorized (verify token): " + err);
             } else {
-                deferred.resolve(verified);
+                if (verified.body.aud == "http://testauth.plasne.com/") {
+                    deferred.resolve(verified);
+                } else {
+                    deferred.reject("Unauthorized (aud): The token was generated for the wrong audience.");
+                }
             }
         });
       });
@@ -318,13 +322,23 @@ app.get("/login/token", function(req, res) {
     verifyToken(token).then(function(verified) {
         console.log("verified as : " + verified.body.upn);
         
-        // generate a JWT
-        getJwtFromToken(token, verified.body.upn).then(function(jwt) {
-            res.status(200).send({ "accessToken": jwt });
-        }, function(msg) {
-            res.status(401).send("Unauthorized (jwt): " + msg);
-        });
+        // native apps cannot do admin consent, but now that we have verified the existing token, we can create a new one
+        var authenticationContext = new AuthenticationContext(authority);
+        authenticationContext.acquireTokenWithClientCredentials(resource, clientId, clientSecret, function(err, tokenResponse) {
+            if (err) {
+                res.status(401).send("Unauthorized (client creds): " + err);
+            } else {
+        
+                // generate a JWT (access token from the service principal but UPN from the original token)
+                getJwtFromToken(tokenResponse.accessToken, verified.body.upn).then(function(jwt) {
+                    res.status(200).send({ "accessToken": jwt });
+                }, function(msg) {
+                    res.status(401).send("Unauthorized (jwt): " + msg);
+                });
 
+            }
+        });
+        
     }, function(msg) {
         res.status(401).send(msg);
     });
