@@ -79,11 +79,11 @@ function getAccessTokenFromCode(code) {
 }
 
 // query the customer's Azure AD to find out what groups the user is a member of
-function getGroupMembershipForUser(token, userId) {
+function getGroupMembershipForUser(token, domain, userId) {
   var deferred = q.defer();
 
   var options = {
-    uri: "https://graph.windows.net/" + userId + "/getMemberGroups?api-version=1.6",
+    uri: "https://graph.windows.net/" + domain + "/users/" + userId + "/getMemberGroups?api-version=1.6",
     json: true,
     headers: {
       "Authorization": "bearer " + token
@@ -134,10 +134,10 @@ function getJwtFromToken(token, userId) {
     var deferred = q.defer();
     
     // get the membership for the user
-    getGroupMembershipForUser(token, userId).then(function(groups) {
+    var domain = userId.split("@")[1];
+    getGroupMembershipForUser(token, domain, userId).then(function(groups) {
         
         // get the details for each group
-        var domain = userId.split("@")[1];
         getGroupDetails(token, domain, groups).then(function(details) {
             
             // build a list of group names
