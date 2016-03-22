@@ -5,18 +5,10 @@ $(document).ready(function() {
     $("<div />").appendTo("body").text("authenticated");
   }
 
-  $("#consent").click(function() {
-    window.location = "/consent";
-  });
-
-  $("#login-aad").click(function() {
-    window.location = "/login/aad";
-  });
-
-  $("#login-ad").click(function() {
+  $("#node-login-ad").click(function() {
     var credentials = {
-        username: $("#login-ad-username").val(),
-        password: $("#login-ad-password").val()
+        username: $("#node-login-ad-username").val(),
+        password: $("#node-login-ad-password").val()
     };
     $.cookie("credentials", JSON.stringify(credentials));
     $.ajax({
@@ -30,7 +22,7 @@ $(document).ready(function() {
     });
   });
 
-  $("#whoami").click(function() {
+  $("#node-whoami").click(function() {
     $.ajax({
       url: "/whoami",
       success: function(me) {
@@ -42,7 +34,7 @@ $(document).ready(function() {
     });
   });
   
-  $("#webapi").click(function() {
+  $("#webapi-whoami").click(function() {
     $.ajax({
       url: "https://pelasne-testauth.azurewebsites.net/hello",
       headers: {
@@ -58,7 +50,7 @@ $(document).ready(function() {
     });
   });
 
-  $("#wcfapi").click(function() {
+  $("#wcf-whoami").click(function() {
     $.ajax({
       url: "http://pelasne-testauth.azurewebsites.net/wcfservice.svc/hello",
       headers: {

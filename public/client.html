@@ -5,31 +5,70 @@
         <script src="client.js"></script>
     </head>
     <body>
-        <p>
-          <a id="consent" href="#">consent</a>
-        </p>
-        <p>
-          <a id="login-aad" href="#">login-aad</a>
-        </p>
-        <p>
-          <span>Username: </span>
-          <input id="login-ad-username" type="text" />
-        </p>
-        <p>
-          <span>Password: </span>
-          <input id="login-ad-password" type="password" />
-        </p>
-        <p>
-          <a id="login-ad" href="#">login-ad</a>
-        </p>
-        <p>
-          <a id="whoami" href="#">who am I?</a>
-        </p>
-        <p>
-          <a id="webapi" href="#">hello WebAPI</a>
-        </p>
-        <p>
-          <a id="wcfapi" href="#">hello WCF</a>
-        </p>
+        <table>
+            <tr>
+                <td>
+                    <p>Node.js Server Backend</p>
+                    <p>
+                        <a href="/consent">consent</a>
+                    </p>
+                    <p>
+                        <a href="/login/aad">login-aad</a>
+                    </p>
+                    <p>
+                        <span>Username: </span>
+                        <input id="node-login-ad-username" type="text" />
+                    </p>
+                    <p>
+                        <span>Password: </span>
+                        <input id="node-login-ad-password" type="password" />
+                    </p>
+                    <p>
+                        <a id="node-login-ad" href="#">node-login-ad</a>
+                    </p>
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                    <p>Web API Server Backend</p>
+                    <p>
+                        <a href="https://pelasne-testauth.azurewebsites.net/consent">consent</a>
+                    </p>
+                    <p>
+                        <a href="https://pelasne-testauth.azurewebsites.net/login">login-aad</a>
+                    </p>
+                    <p>
+                        <span>Username: </span>
+                        <input id="webapi-login-ad-username" type="text" />
+                    </p>
+                    <p>
+                        <span>Password: </span>
+                        <input id="webapi-login-ad-password" type="password" />
+                    </p>
+                    <p>
+                        <a id="webapi-login-ad" href="#">login-ad</a>
+                    </p>
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                    <p>Java Server Backend</p>
+                    <p>Coming soon...</p>
+                </td>
+            </tr>
+        </table>
+        <div id="status" style="margin-top : 16px"></div>
+        <div style="margin-top : 16px">
+            <p>Client Endpoints</p>
+            <p>
+                <a id="node-whoami" href="#">who am I?</a>
+            </p>
+            <p>
+                <a id="webapi-whoami" href="#">hello WebAPI</a>
+            </p>
+            <p>
+                <a id="wcf-whoami" href="#">hello WCF</a>
+            </p>
+        </div>
     </body>
 </html>
