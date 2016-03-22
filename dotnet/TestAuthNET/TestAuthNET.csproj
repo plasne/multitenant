@@ -141,6 +141,7 @@
     <Compile Include="WCFService.svc.cs">
       <DependentUpon>WCFService.svc</DependentUpon>
     </Compile>
+    <Compile Include="WebAPIAuth.cs" />
     <Compile Include="WebAPIService.cs" />
   </ItemGroup>
   <ItemGroup>
