@@ -92,6 +92,7 @@ function getGroupMembershipForUser(token, domain, userId) {
       "securityEnabledOnly": false
     }
   };
+console.log(options.uri);
   request.post(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
