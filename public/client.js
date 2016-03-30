@@ -1,8 +1,25 @@
 
+function getQuerystring(key, default_)
+ {
+   if (default_==null) default_=""; 
+   key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+   var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+   var qs = regex.exec(window.location.href);
+   if(qs == null)
+     return default_;
+   else
+     return qs[1];
+ }
+
 $(document).ready(function() {
 
+  var accessToken_qs = getQuerystring("accessToken");
+  if (accessToken_qs.length > 0) {
+      $.cookie("accessToken", accessToken_qs);
+  }
+
   if (document.cookie.indexOf("accessToken") > -1) {
-    $("<div />").appendTo("body").text("authenticated");
+    $("<div />").appendTo("#status").text("authenticated");
   }
 
   $("#node-login-ad").click(function() {
