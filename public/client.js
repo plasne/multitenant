@@ -90,8 +90,8 @@ $(document).ready(function() {
               "Authorization": "Bearer " + $.cookie("accessToken")
           },
           dataType: "json",
-          success: function(reply) {
-              $("<div />").appendTo("#status").text(reply.message);
+          success: function(me) {
+              $("<div />").appendTo("#status").text("id: " + me.id + " (" + me.role + ") " + me.rights);
           },
           error: function(err) {
               $("<div />").appendTo("#status").text("error: " + err);
