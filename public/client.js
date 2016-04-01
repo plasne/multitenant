@@ -31,10 +31,10 @@ $(document).ready(function() {
     $.ajax({
        url: "/login/ad",
        success: function() {
-           $("<div />").appendTo("body").text("authenticated");
+           $("<div />").appendTo("#status").text("authenticated");
        },
        error: function(err) {
-           $("<div />").appendTo("body").text("error: " + err);
+           $("<div />").appendTo("#status").text("error: " + err);
        }
     });
   });
@@ -43,10 +43,10 @@ $(document).ready(function() {
     $.ajax({
       url: "/whoami",
       success: function(me) {
-        $("<div />").appendTo("body").text("id: " + me.id + " (" + me.role + ") " + me.rights);
+        $("<div />").appendTo("#status").text("id: " + me.id + " (" + me.role + ") " + me.rights);
       },
       error: function(err) {
-        $("<div />").appendTo("body").text("error: " + err);
+        $("<div />").appendTo("#status").text("error: " + err);
       }
     });
   });
@@ -59,10 +59,10 @@ $(document).ready(function() {
       },
       dataType: "json",
       success: function(reply) {
-        $("<div />").appendTo("body").text(reply.message);
+        $("<div />").appendTo("#status").text(reply.message);
       },
       error: function(err) {
-        $("<div />").appendTo("body").text("error: " + err);
+        $("<div />").appendTo("#status").text("error: " + err);
       }
     });
   });
@@ -75,12 +75,28 @@ $(document).ready(function() {
       },
       dataType: "json",
       success: function(reply) {
-        $("<div />").appendTo("body").text(reply.message);
+        $("<div />").appendTo("#status").text(reply.message);
       },
       error: function(err) {
-        $("<div />").appendTo("body").text("error: " + err);
+        $("<div />").appendTo("#status").text("error: " + err);
       }
     });
+  });
+  
+  $("#func-whoami").click(function() {
+      $.ajax({
+          url: "https://pelasne-func.azurewebsites.net/api/testauth?code=wxoeguz9j0y2k6oh3wqoxbt9t1e3w6iibdv3p2ogveso47vih9n4dioc7w4pclldfiara4i",
+          headers: {
+              "Authorization": "Bearer " + $.cookie("accessToken")
+          },
+          dataType: "json",
+          success: function(reply) {
+              $("<div />").appendTo("#status").text(reply.message);
+          },
+          error: function(err) {
+              $("<div />").appendTo("#status").text("error: " + err);
+          }
+      });
   });
   
 });
