@@ -27,6 +27,11 @@ namespace WpfClient
             InitializeComponent();
         }
 
+        async private void identity_Click(object sender, RoutedEventArgs e)
+        {
+            message.Content = Environment.UserDomainName + "\\" + Environment.UserName;
+        }
+
         async private void login_Click(object sender, RoutedEventArgs e)
         {
 

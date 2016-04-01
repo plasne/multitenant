@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Button x:Name="identity" Content="local identity" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="identity_Click"/>
         <Button x:Name="login" Content="login" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="75" Click="login_Click"/>
-        <Label x:Name="message" Content="not logged in" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="500"/>
         <Button x:Name="whoAmI" Content="who am I" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Width="75" Click="whoAmI_Click"/>
+        <Label x:Name="message" Content="not logged in" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" Width="500"/>
     </Grid>
 </Window>
