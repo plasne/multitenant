@@ -36,7 +36,7 @@ If you provide a valid username and password, you can then click on the "login-a
 4. The user is shown the "authenticated" message. Unlike the prior flows which involved browser redirects, this method can stay on the page.
 
 ## Who-Am-I
-The who-am-I links on the page allow you to connect to a number of backend services (one hosted in Node.js, one hosted as a Web API service, and one hosted as a WCF service) which will validate the JWT and provide details about the user. This is a service to demonstrate how the AuthN and AuthZ will be used to contact web services. The complete process is:
+The who-am-I links on the page allow you to connect to a number of backend services (one hosted in Node.js, one hosted as a Web API service, one hosted as a WCF service, and one hosted as an Azure Function) which will validate the JWT and provide details about the user. This is a service to demonstrate how the AuthN and AuthZ will be used to contact web services. The complete process is:
 
 1. The client sends the JWT to the service either as a cookie or as an Authorization header.
 2. The server uses the symmetric key to decrypt the JWT signature, thereby validating it's authenticity.
