@@ -4,22 +4,36 @@ This idea behind this multi-tenant application is that one company (who I will r
 There are multiple other companies (who I will refer to as **consumers**) that will consume those services using a variety of clients (HTML/JS, mobile apps, WPF apps, etc.). These consumers will manage their own users and groups via their own Active Directory systems.
 
 There are a variety of pieces provided:
-- A Node.js server presenting a simple HTML/JS site and REST/JSON services
-  - AuthN/AuthZ can be via Azure AD, LDAP, or client certificate (Coming Soon)
-  - A JSON Web Token is always provided regardless of 
-- (Coming Soon) A Java server providing the same functionality as the Node.js server
-- A service hosted as an Azure Function
-- A JavaScript client that can consume those services after authenticating
-- A WCF client that can consume those services after authenticating
-- A WebAPI client that can consume those services after authenticating
-- A WPF client that can consume those services after authenticating
+
+- Authentication Services
+  - A Node.js server presenting a simple HTML/JS site and REST/JSON services
+    - AuthN/AuthZ can be via Azure AD or Active Directory
+    - A JSON Web Token is always provided regardless of the authentication method
+    - The JSON Web Token contains any claims about the user's identity or rights
+    - The services 
+  - A Web API server providing the same functionality as the Node.js server
+  - (Coming Soon) A Java server providing the same functionality as the Node.js server
+- Service Providers
+  - A Node.js service that will respond after it can verify the JWT
+  - A WCF service that will respond after it can verify the JWT
+  - A Web API service that will respond after it can verify the JWT
+  - An Azure Function service that will respond after it can verify the JWT
+- Clients
+  - A JavaScript client that can consume those services after authenticating
+  - A WPF client that can consume those services after authenticating
 
 ## Samples
 Click on any of the following to understand the specifics of the configuration:
-- [Node.js server](/docs/nodejs.md)
-- Java server
-- [Azure Function service](https://github.com/plasne/multitenant-func)
-- [JavaScript client](/docs/javascript.md)
-- [WebAPI client](/docs/webapi.md)
-- WCF client
-- [WPF client](/docs/wpf.md)
+
+- Authentication Services
+  - [Node.js server](/docs/nodejs.md)
+  - Web API server
+  - Java server
+- Service Providers
+  - [Node.js service](/docs/nodejs.md)
+  - WCF service
+  - [WebAPI client](/docs/webapi.md)
+  - [Azure Function service](https://github.com/plasne/multitenant-func)
+- Clients
+  - [JavaScript client](/docs/javascript.md)
+  - [WPF client](/docs/wpf.md)
