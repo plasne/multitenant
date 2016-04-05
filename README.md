@@ -7,18 +7,19 @@ There are a variety of pieces provided:
 - A Node.js server presenting a simple HTML/JS site and REST/JSON services
   - AuthN/AuthZ can be via Azure AD, LDAP, or client certificate (Coming Soon)
   - A JSON Web Token is always provided regardless of 
+- (Coming Soon) A Java server providing the same functionality as the Node.js server
+- A service hosted as an Azure Function
 - A JavaScript client that can consume those services after authenticating
 - A WCF client that can consume those services after authenticating
 - A WebAPI client that can consume those services after authenticating
 - A WPF client that can consume those services after authenticating
-- (Coming Soon) A WPF client that is on a trusted endpoint that can consume those services after authenticating
-- (Coming Soon) A Java server providing the same functionality as the Node.js server
 
 ## Samples
 Click on any of the following to understand the specifics of the configuration:
 - [Node.js server](/docs/nodejs.md)
+- Java server
+- [Azure Function service](https://github.com/plasne/multitenant-func)
 - [JavaScript client](/docs/javascript.md)
 - [WebAPI client](/docs/webapi.md)
 - WCF client
 - [WPF client](/docs/wpf.md)
-- Trusted WPF client
