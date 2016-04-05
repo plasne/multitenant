@@ -1,4 +1,4 @@
-# Web API client
+# Web API services
 If the provider wants to host some services using Web API (maybe even hosted as an Azure Web App or in Service Fabric), this sample demonstrates how the endpoints that require AuthN/AuthZ can use the JWT provided by the login service to ensure the call is legitimate.
 
 ## Components
@@ -33,3 +33,16 @@ There are some files that are specifically related to making this work:
 * WebAPIService.cs - The files that contains any endpoints.
 
 ## CORS
+There are 2 pieces to getting CORS to work. The first is a set of custom response headers in the web.config file; specifically under configuration/system.webServer/httpProtocol/customHeaders:
+
+* Access-Control-Allow-Credentials
+* Access-Control-Allow-Methods
+* Access-Control-Allow-Headers   (make sure Authorization is included)
+* Access-Control-Max-Age
+
+The second piece is to make Access-Control-Allow-Origin respond with the referrer domain provided it was a legitimate domain. This is implemented in the Global.asax file in the method ValidReferrerDomain. Essentially if the call was made from a domain that you want to respond to, you write back the host URL as the origin.
+
+## Services
+The services could be hosted as any class that inherits ApiController. For this example, the only service is called Hello and is contained in the WebAPIService.cs file.
+
+To specify that the service endpoint should require authentication, it is decorated with the [Authorize] attribute
