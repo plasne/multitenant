@@ -30,7 +30,7 @@ Click on any of the following to understand the specifics of the configuration:
   - Web API server
   - Java server
 - Service Providers
-  - [Node.js service](/docs/nodejs.md)
+  - Node.js service
   - WCF service
   - [WebAPI client](/docs/webapi.md)
   - [Azure Function service](https://github.com/plasne/multitenant-func)
