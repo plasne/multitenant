@@ -22,9 +22,9 @@
   version="3.1"
   metadata-complete="true">
 
-  <display-name>Welcome to Tomcat</display-name>
+  <display-name>multitenant</display-name>
   <description>
-     Welcome to Tomcat
+     multitenant proof-of-concept app
   </description>
 
   <servlet>

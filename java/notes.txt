@@ -1,0 +1,25 @@
+
+- Added Apache Ivy to the project
+  - ivy.xml is similar to package.json - defines dependencies
+  - Ivy functionality is invoked by the Ant script.
+
+- Added Apache Ant to the project
+  - build.xml is the default Ant script
+  - just run "ant" on the command line, and build.xml should be
+    executed with the default "target" - war.
+    Ant will then determine and execute the dependent targets.
+  - Run 'ant ivy-resolve' to download the dependent jars to the lib/ dir per ivy.xml
+    But, you don't have to do this, as I put the lib/ directory in the git repo.
+
+- Reworked the directory structure
+  - java source in src/
+  - jsp files in jsp/
+  - web config files in web/
+  - added the lib/ directory - contains the set of files downloaded by Ivy
+  - added the deploy/ directory - contains the generated war file
+
+- Deployment
+  - copy the deploy/multitenant.war to the Tomcat webapps/ directory.
+    you may have to restart Tomcat, depending on its autodeploy setting.
+  - optionally stop and restart Tomcat
+  - Visit localhost:8080/multitenant/ with your browser
