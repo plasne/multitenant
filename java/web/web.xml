@@ -22,7 +22,7 @@
   version="3.1"
   metadata-complete="true">
 
-  <display-name>multitenant</display-name>
+  <display-name> multitenant </display-name>
   <description>
      multitenant proof-of-concept app
   </description>
