@@ -1,0 +1,114 @@
+<project name="multitenant" default="war" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+  <description>
+    Apache Ant buildfile for the Java Portion of this project.
+    Uses Apache Ivy to manage library dependencies.
+
+    Links:
+      Ant - http://ant.apache.org
+      Ivy - http://ant.apache.org/ivy/
+      Maven Repository of jars used by Ivy - http://mvnrepository.com
+
+    Command Line Use:
+      $ ant ivy-clean-cache  
+      $ ant ivy-resolve     (downlib libs and their dependencies per ivy.xml)
+      $ ant ivy-report
+      $ ant                 (defaults to the 'war' task; executes dependent tasks like 'compile')
+
+  </description>
+
+  <!-- define variables used in this script -->
+  <property name="class.dir"           value="bin" />
+  <property name="lib.dir"             value="lib" />
+  <property name="src.dir"             value="src" />
+  <property name="res.dir"             value="resource" />
+  <property name="build.dir"           value="build" />
+  <property name="jar.classes.name"    value="${build.dir}/joakim_core.jar" />
+  <property name="jar.resources.name"  value="${build.dir}/joakim_core_res.jar" />  
+  <property name="web.lib.dir"         value="../JavaWeb/WebContent/WEB-INF/lib" />
+
+  <!-- paths used for compilation and run  -->
+  <path id="lib.path.id">
+    <fileset dir="${lib.dir}" />
+  </path>
+
+  <path id="run.path.id">
+    <path refid="lib.path.id" />
+    <path location="${build.dir}" />
+  </path>
+
+  <tstamp>
+    <format property="build_timestamp" pattern="yyyyMMdd_HHmm" />
+  </tstamp>
+
+  <!-- 'atomic' tasks with no dependencies  -->
+
+  <target name="ivy-resolve" description="retreive dependencies with ivy">
+    <ivy:retrieve/>
+  </target>
+
+  <target name="ivy-report" depends="ivy-resolve" description="generates a report of ivy dependencies">
+    <ivy:report todir="${build.dir}"/>
+  </target>
+
+  <target name="ivy-clean-cache" description="clean the ivy cache">
+    <ivy:cleancache />
+  </target>
+
+  <target name="clean" description="clean the project">
+    <mkdir dir="${build.dir}"/>
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="init">
+    <description>
+      Initialize the classpath and other settings.
+    </description>
+
+    <delete dir="${class.dir}" />
+    <mkdir dir="${class.dir}" />
+
+    <delete dir="${build.dir}" />
+    <mkdir dir="${build.dir}" />
+      
+    <path id="javac.classpath">
+      <pathelement path="${class.dir}" />
+      <pathelement path="resource" />
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar" />
+      </fileset>
+    </path>
+
+    <!-- the ant.properties file is generated here for script debugging -->
+    <echoproperties destfile="${build.dir}/ant.properties"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <description>
+      Compile the Java source files.
+    </description>
+    <javac srcdir="${src.dir}" 
+           destdir="${class.dir}" 
+           target="1.8" 
+           debug="true" 
+           debuglevel="lines,vars,source">
+      <classpath refid="javac.classpath" />
+    </javac>
+  </target>
+
+  <target name="war" depends="compile">
+    <description>
+      Create the Web ARchive file to deploy to Tomcat.
+      Optionally run 'jar tvf deploy/multitenant.war' to see its contents.
+    </description>
+    <war destfile="deploy/multitenant.war" webxml="web/web.xml">
+      <fileset dir="jsp"/>
+      <lib dir="${lib.dir}">
+        <!-- Tomcat should already have these, so exclude from the war file -->
+        <exclude name="lib/javax.servlet-api-3.0.1.jar"/>
+      </lib>
+      <classes dir="${class.dir}"/>
+    </war>
+  </target>
+
+</project>
