@@ -29,6 +29,30 @@ public class Token extends HttpServlet {
     return null;
   }
 
+  public String post(String s_url, String body) throws Throwable {
+    URL url = new URL(s_url);
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setDoOutput(true);
+    conn.setInstanceFollowRedirects(false);
+    conn.setRequestMethod("POST");
+    conn.setRequestProperty("Content-Type", "application/json");
+    conn.setRequestProperty("charset", "utf-8");
+    byte[] bodyBuffer = body.getBytes("UTF-8");
+    conn.setRequestProperty("Content-Length", Integer.toString(bodyBuffer.length));
+    conn.setUseCaches(false);
+    try( DataOutputStream wr = new DataOutputStream(conn.getOutputStream()) ) {
+      wr.write(bodyBuffer);
+    }
+    try( Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8")) ) {
+      StringBuilder sb = new StringBuilder();
+      for (int c; (c = in.read()) >= 0;) {
+        sb.append((char)c);
+      }
+      String result = sb.toString();
+      return result;
+    }
+  }
+
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
   {
 
@@ -63,7 +87,13 @@ public class Token extends HttpServlet {
           if (result == null) {
             response.sendError(401, "no auth result");
           } else {
-            response.sendError(500, "success " + result.getAccessToken());
+
+            String userId = result.getUserInfo().getDisplayableId();
+            String domain = userId.split("@")[1];
+            String url = "https://graph.windows.net/" + domain + "/users/" + userId + "/getMemberGroups?api-version=1.6";
+            String json = post(url, "{ \"securityEnabledOnly\": false }");
+
+            response.sendError(500, "success: " + json);
           }
 
         } catch (Throwable e) {
