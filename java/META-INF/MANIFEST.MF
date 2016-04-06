@@ -1,0 +1,54 @@
+Manifest-Version: 1.0
+Export-Package: com.nimbusds.jose;uses:="com.nimbusds.jose.jca,com.nim
+ busds.jose.jwk,com.nimbusds.jose.util,com.nimbusds.jwt,net.jcip.annot
+ ations,net.minidev.json";version="4.9.0",com.nimbusds.jose.crypto;use
+ s:="com.nimbusds.jose,com.nimbusds.jose.jca,com.nimbusds.jose.jwk,com
+ .nimbusds.jose.util,javax.crypto,net.jcip.annotations";version="4.9.0
+ ",com.nimbusds.jose.crypto.bc;uses:="org.bouncycastle.jce.provider";v
+ ersion="4.9.0",com.nimbusds.jose.crypto.factories;uses:="com.nimbusds
+ .jose,com.nimbusds.jose.jca,com.nimbusds.jose.proc,net.jcip.annotatio
+ ns";version="4.9.0",com.nimbusds.jose.jca;uses:="com.nimbusds.jose";v
+ ersion="4.9.0",com.nimbusds.jose.jwk;uses:="com.nimbusds.jose,com.nim
+ busds.jose.util,javax.crypto,net.jcip.annotations,net.minidev.json";v
+ ersion="4.9.0",com.nimbusds.jose.proc;uses:="com.nimbusds.jose,net.jc
+ ip.annotations";version="4.9.0",com.nimbusds.jose.util;uses:="net.jci
+ p.annotations,net.minidev.json";version="4.9.0",com.nimbusds.jwt;uses
+ :="com.nimbusds.jose,com.nimbusds.jose.util,net.jcip.annotations,net.
+ minidev.json";version="4.9.0"
+Implementation-Title: Nimbus JOSE+JWT
+Built-By: vd
+Tool: Bnd-2.3.0.201405100607
+Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.7))"
+Implementation-Vendor: Connect2id Ltd.
+Build-Number: ${buildNumber}
+Implementation-Vendor-Id: com.nimbusds
+Specification-Title: Nimbus JOSE+JWT
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: com.nimbusds.nimbus-jose-jwt
+Implementation-Version: 4.9
+Specification-Vendor: Connect2id Ltd.
+Build-Tag: 4.9
+Bundle-Name: Nimbus JOSE+JWT
+Created-By: Apache Maven Bundle Plugin
+Build-Date: ${timestamp}
+Bundle-Vendor: Connect2id Ltd.
+Build-Jdk: 1.7.0_80
+Bundle-Version: 4.9.0
+Bnd-LastModified: 1448912781400
+Bundle-ManifestVersion: 2
+Bundle-Description: Java library for Javascript Object Signing and Enc
+ ryption (JOSE) and        JSON Web Tokens (JWT)
+Import-Package: com.nimbusds.jose,com.nimbusds.jose.crypto.factories,c
+ om.nimbusds.jose.proc,javax.crypto,javax.crypto.spec,net.jcip.annotat
+ ions,net.minidev.json;version="[1.3,2)",net.minidev.json.parser;versi
+ on="[1.3,2)",org.apache.commons.io;version="[1.4,2)",org.apache.commo
+ ns.io.input;version="[1.4,2)",org.bouncycastle.crypto;version="[1.53,
+ 2)";resolution:=optional,org.bouncycastle.crypto.engines;version="[1.
+ 53,2)";resolution:=optional,org.bouncycastle.crypto.modes;version="[1
+ .53,2)";resolution:=optional,org.bouncycastle.crypto.params;version="
+ [1.53,2)";resolution:=optional,org.bouncycastle.jce.provider;version=
+ "[1.53,2)";resolution:=optional
+Bundle-DocURL: http://connect2id.com
+Specification-Version: 4.9
+Archiver-Version: Plexus Archiver
+

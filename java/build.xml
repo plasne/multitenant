@@ -89,7 +89,7 @@
     </description>
     <javac srcdir="${src.dir}" 
            destdir="${class.dir}" 
-           target="1.8" 
+           target="1.7" 
            debug="true" 
            debuglevel="lines,vars,source">
       <classpath refid="javac.classpath" />

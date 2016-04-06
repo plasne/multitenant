@@ -17,7 +17,7 @@ public class Login extends HttpServlet {
     // variables
     String authority = "https://login.windows.net/common";
     String clientId = "36bda7c5-cc23-4618-9e09-e710b2357818";
-    String redirect = "http://pelasne-java.southcentralus.cloudapp.azure.com:8080/testauth/token";
+    String redirect = "http://pelasne-java.southcentralus.cloudapp.azure.com:8080/multitenant/token";
     String state = "random";
     String resource = "https://graph.windows.net/";
 

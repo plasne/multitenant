@@ -36,7 +36,7 @@ public class Token extends HttpServlet {
       String authority = "https://login.windows.net/common";
       String clientId = "36bda7c5-cc23-4618-9e09-e710b2357818";
       String clientSecret = "gol9M4EXyLk0lNJWzig2FUECrMJnh7TvEdm+KLHo7rk=";
-      String redirect = "http://pelasne-java.southcentralus.cloudapp.azure.com:8080/testauth/token";
+      String redirect = "http://pelasne-java.southcentralus.cloudapp.azure.com:8080/multitenant/token";
       String resource = "https://graph.windows.net/";
 
       // ensure this is part of the same authorization chain
