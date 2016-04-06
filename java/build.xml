@@ -21,7 +21,7 @@
   <property name="class.dir"           value="bin" />
   <property name="lib.dir"             value="lib" />
   <property name="src.dir"             value="src" />
-  <property name="res.dir"             value="resource" />
+  <property name="res.dir"             value="res" />
   <property name="build.dir"           value="build" />
   <property name="jar.classes.name"    value="${build.dir}/joakim_core.jar" />
   <property name="jar.resources.name"  value="${build.dir}/joakim_core_res.jar" />  
@@ -101,6 +101,13 @@
       Create the Web ARchive file to deploy to Tomcat.
       Optionally run 'jar tvf deploy/multitenant.war' to see its contents.
     </description>
+
+    <!--
+    Configuration values are externalized into a Properties file
+    and read upon Servlet init() as a "resource" from the classpath.
+    -->
+    <copy file="${res.dir}/multitenant.properties" todir="${class.dir}"/>
+
     <war destfile="deploy/multitenant.war" webxml="web/web.xml">
       <fileset dir="jsp"/>
       <lib dir="${lib.dir}">
