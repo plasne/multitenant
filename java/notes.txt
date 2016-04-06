@@ -24,3 +24,26 @@
   - optionally stop and restart Tomcat
   - Visit localhost:8080/multitenant/ with your browser
 
+- Config values
+  - One option is Servlet init parameters in web.xml
+
+    - see https://docs.oracle.com/cd/E13222_01/wls/docs92/webapp/progservlet.html#wp159396
+
+      <servlet>
+        ...
+       <init-param>
+          <description>The salutation</description>
+          <param-name>greeting</param-name>
+          <param-value>Welcome</param-value>
+        </init-param>
+       <init-param>
+          <description>name</description>
+          <param-name>person</param-name>
+          <param-value>WebLogic Developer</param-value>
+        </init-param>
+      </servlet>
+
+  - Another option is loading a properties file from the classpath.
+    This is the approach I implemented.
+    See the "multitenant.properties" file, the "war" target in build.xml,
+    and the init() method of the Login Servlet.
