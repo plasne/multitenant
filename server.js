@@ -143,7 +143,7 @@ function getJwtFromToken(token, userId) {
             var membership = [];
             details.forEach(function(group) {
                 if (group.displayName.startsWith("testauth_")) {
-                membership.push(group.displayName.replace("testauth_", ""));
+                    membership.push(group.displayName.replace("testauth_", ""));
                 }
             });
 
