@@ -5,6 +5,9 @@ import java.net.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import org.json.*;
+import com.nimbusds.jose.*;
+import com.nimbusds.jwt.*;
+import com.nimbusds.jose.crypto.*;
 
 import com.microsoft.aad.adal4j.*;
 import com.nimbusds.oauth2.sdk.AuthorizationCode;
@@ -94,6 +97,7 @@ public class Token extends HttpServlet {
       String state        = (String) properties.get("login.state");
       String resource     = (String) properties.get("login.resource");
       String key          = (String) properties.get("token.key");
+      String homepage     = (String) properties.get("token.homepage");
 
       // ensure this is part of the same authorization chain
       String state_qs = request.getParameter("state");
@@ -161,12 +165,19 @@ public class Token extends HttpServlet {
             }
 
             // build the JWT
-            String claims = "{ \"iss\": \"http://testauth.plasne.com\", \"sub\": userId, \"scope\": [\"" + join("\",\"", groupNames) + "\"], \"rights\": [\"" + join("\",\"", rights) + "\"] }";
-            JWSObject jwsObject = new JWSObject(new JWSHeader(JWSAlgorithm.HS256),
-                                                new Payload(claims));
-            byte[] key = 
+            JWTClaimsSet claimsSet = new JWTClaimsSet();
+            claimsSet.setIssuer("http://testauth.plasne.com");
+            claimsSet.setSubject(userId);
+            claimsSet.setCustomClaim("scope", "[\"" + join("\",\"", groupNames) + "\"]");
+            claimsSet.setCustomClaim("rights", "[\"" + join("\",\"", rights) + "\"]");
+            claimsSet.setExpirationTime(new Date(new Date().getTime() + 4 * 60 * 1000)); // 4 hours
+            SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
+            signedJWT.sign(new MACSigner(key));
+            String jwt = signedJWT.serialize();
 
-            response.sendError(500, "success!!: " + claims);
+            // redirect
+            response.sendRedirect(homepage + "?accessToken=" + jwt);
+
           }
 
         } catch (Throwable e) {
