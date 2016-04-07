@@ -16,8 +16,8 @@ See http://mvnrepository.com
 <ivy-module version="2.0">
     <info organisation="com.plasne" module="poc"/>
     <dependencies>
-<!--        <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.52"/>  -->
         <dependency org="com.microsoft.azure" name="adal4j" rev="1.1.2"/>
         <dependency org="com.nimbusds" name="oauth2-oidc-sdk" rev="4.5"/>
+        <dependency org="org.json" name="json" rev="20160212"/>
     </dependencies>
 </ivy-module>
