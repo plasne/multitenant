@@ -85,9 +85,10 @@ $(document).ready(function() {
   
   $("#func-whoami").click(function() {
       $.ajax({
-          url: "https://pelasne-func.azurewebsites.net/api/testauth?code=wxoeguz9j0y2k6oh3wqoxbt9t1e3w6iibdv3p2ogveso47vih9n4dioc7w4pclldfiara4i",
+          url: "https://pelasne-func.azurewebsites.net/api/testauth",
           headers: {
-              "Authorization": "Bearer " + $.cookie("accessToken")
+              "Authorization": "Bearer " + $.cookie("accessToken"),
+              "x-functions-key": "wxoeguz9j0y2k6oh3wqoxbt9t1e3w6iibdv3p2ogveso47vih9n4dioc7w4pclldfiara4i"
           },
           dataType: "json",
           success: function(me) {
