@@ -12,7 +12,7 @@ There are a variety of pieces provided:
     - The JSON Web Token contains any claims about the user's identity or rights
     - The services 
   - A Web API server providing the same functionality as the Node.js server
-  - (Coming Soon) A Java server providing the same functionality as the Node.js server
+  - A Java server providing the same functionality as the Node.js server
 - Service Providers
   - A Node.js service that will respond after it can verify the JWT
   - A WCF service that will respond after it can verify the JWT
@@ -27,7 +27,7 @@ Click on any of the following to understand the specifics of the configuration:
 
 - Authentication Services
   - [Node.js server](/docs/nodejs.md)
-  - Web API server
+  - [Web API server](/docs/webapi-auth.md)
   - Java server
 - Service Providers
   - Node.js service
