@@ -1,4 +1,4 @@
-# Node.js server
+# Node.js authentication server
 This sample includes a Node.js server that hosts:
 - The REST/JSON services required for AuthN, AuthZ, and sample end-points
 - The JavaScript client sample
