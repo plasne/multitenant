@@ -217,25 +217,25 @@ namespace TestAuthNET
                         }
                         catch (Exception ex)
                         {
-                            string message = Regex.Replace(ex.Message, @"\t|\n|\r", "");
                             response.StatusCode = HttpStatusCode.Unauthorized;
-                            response.ReasonPhrase = "Unauthorized (details): " + message; // + ex.Message.Replace("\n", " ");
-                            response.Headers.Add("exception1", message);
+                            string message = Regex.Replace(ex.Message, @"\t|\n|\r", "");
+                            response.ReasonPhrase = "Unauthorized (details): " + message;
                         }
 
                     }
                     catch (Exception ex)
                     {
                         response.StatusCode = HttpStatusCode.Unauthorized;
-                        response.ReasonPhrase = "Unauthorized (membership): " + ex.Message;
-                        response.Headers.Add("exception2", ex.Message);
+                        string message = Regex.Replace(ex.Message, @"\t|\n|\r", "");
+                        response.ReasonPhrase = "Unauthorized (membership): " + message;
                     }
 
                 }
                 catch (Exception ex)
                 {
                     response.StatusCode = HttpStatusCode.Unauthorized;
-                    response.ReasonPhrase = "Unauthorized (access token): " + ex.Message;
+                    string message = Regex.Replace(ex.Message, @"\t|\n|\r", "");
+                    response.ReasonPhrase = "Unauthorized (access token): " + message;
                 }
 
             }
