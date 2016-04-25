@@ -28,9 +28,9 @@ There are some files that are specifically related to making this work:
  
 * Startup.cs - This is responsible for the Web API startup processes, specifically it attaches a JWT authentication component.
  
-* Web.config - There are custom headers required for CORS to work.
+* Web.config - There are custom headers required for CORS to work. In addition, there are some secrets (such as the JWT symmetric key) that can be stored here. If this solution is going to be hosted in Azure, you can put those secrets in the Azure App Settings and/or Connection Strings.
 
-* WebAPIService.cs - The files that contains any endpoints.
+* WebAPIService.cs - The file that contains all the service endpoints.
 
 ## CORS
 There are 2 pieces to getting CORS to work. The first is a set of custom response headers in the web.config file; specifically under configuration/system.webServer/httpProtocol/customHeaders:
