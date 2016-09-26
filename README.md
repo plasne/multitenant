@@ -1,3 +1,8 @@
+**This sample should be updated to:
+ - Use https://graph.microsoft.com instead of https://graph.windows.net (including projection).
+ - It is no longer required to "Read all groups" or "Read directory data", instead just use "Sign in and read user profile" and "Access the directory as the signed-in user".
+**
+
 # Multi-Tenant AuthN/AuthZ Sample
 This idea behind this multi-tenant application is that one company (who I will refer to as the **provider**) owns a set of web services that they host in their domain and have registered in their Azure Active Directory. They have multiple technologies that they use to host these services (Node.js, .NET WCF, .NET Web API, Java, etc.).
 
