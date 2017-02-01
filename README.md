@@ -52,10 +52,10 @@ Click on any of the following to understand the specifics of the configuration:
 ||Single-Tenant|Multi-tenant|Comments|
 |---|---|---|---|
 |Native||||
-|---|---|---|---|
+| | | | |
 |  Username/Password|Works|Unsupported|As expected|
 |  ClientID/ClientSecret|Insufficient privileges|Unsupported|As expected; there doesn't seem to be a way to properly establish permissions so it seems legit that this would not work.|
 |Web App||||
-|---|---|---|---|
+| | | | |
 |  Username/Password|Request body must contain client_secret or client_assertion|Request body must contain client_secret or client_assertion|This is consistent, but seems like a scenario that should be OK; I suspect this might get fixed in a later release.|
 |  ClientID/ClientSecret|Works|The identity of the calling app cannot be established|This is inconsistent between single- and multi- tenant so must be a bug.|
