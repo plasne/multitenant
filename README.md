@@ -1,5 +1,5 @@
 **This sample should be updated to:**
- - Use https://graph.microsoft.com instead of https://graph.windows.net (including projection).
+ - Use https://graph.microsoft.com instead of https://graph.windows.net (including projection). [example](/docs/graphexample.md)
 
 
 
