@@ -41,3 +41,6 @@ To create a new Azure AD application follow these steps:
 15. Under "permissions to other applications", "Windows Azure Active Directory", "Delegated Permissions", check "Sign in and read user profile", "Read directory data", and "Read all groups".
 16. Click on the "Save" button at the bottom.
 17. Copy the key that is generated after save under "keys". This is the Client Secret and you will need it for your server implementation. **IMPORTANT:** You cannot get this after your leave the page, so you must copy it now or create a new key later.
+
+## Notes
+- This document describes using the legacy portal. While the current Azure portal supports AAD now, there is a bug by which creating a Web App does NOT create the Service Principal and therefore acquireTokenWithClientCredentials won't work. For now, continue to use the old portal.
