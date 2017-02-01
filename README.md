@@ -48,3 +48,8 @@ Click on any of the following to understand the specifics of the configuration:
 
 ## To-Do
 - As soon as it is supported, drop "Read all groups" or "Read directory data", and use "Sign in and read user profile" and "Access the directory as the signed-in user".
+
+||Single-Tenant|Multi-tenant|Comments|
+|---|---|---|---|
+|Native||||
+|  Username/Password|Works|Unsupported|As expected|
