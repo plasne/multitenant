@@ -29,6 +29,8 @@ There are a variety of pieces provided:
   - A WPF client that can consume those services after authenticating
 
 ## Samples
+To create the multi-tenant Azure AD application, see this [guide](docs/ad-application.md).
+
 Click on any of the following to understand the specifics of the configuration:
 
 - Authentication Services
