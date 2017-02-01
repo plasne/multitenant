@@ -1,6 +1,6 @@
 **This sample should be updated to:**
  - Use https://graph.microsoft.com instead of https://graph.windows.net (including projection).
- - It is no longer required to "Read all groups" or "Read directory data", instead just use "Sign in and read user profile" and "Access the directory as the signed-in user".
+
 
 
 
@@ -43,3 +43,8 @@ Click on any of the following to understand the specifics of the configuration:
 - Clients
   - [JavaScript client](/docs/javascript.md)
   - [WPF client](/docs/wpf.md)
+
+
+
+## To-Do
+- As soon as it is supported, drop "Read all groups" or "Read directory data", and use "Sign in and read user profile" and "Access the directory as the signed-in user".
