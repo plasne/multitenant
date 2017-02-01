@@ -36,3 +36,11 @@ request.get({
 ```
 
 The Application Permissions were set to "Read directory data".
+
+## Projection
+$select
+To specify a different set of properties to return than the default set provided by the Graph, use the $select query option. The $select option allows for choosing a subset or superset of the default set returned. For example, when retrieving your messages, you might want to select that only the from and subject properties of messages are returned.
+
+GET https://graph.microsoft.com/v1.0/me/messages?$select=from,subject
+
+from: https://graph.microsoft.io/en-us/docs/overview/query_parameters 
