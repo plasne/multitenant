@@ -107,8 +107,6 @@ function getJwtFromToken(token, userId) {
     var domain = userId.split("@")[1];
     getGroupMembershipForUser(token, domain, userId).then(function(groups) {
 
-        console.log(groups);
-                    
         // build a list of group names
         var membership = [];
         details.forEach(function(group) {
@@ -148,7 +146,7 @@ function getJwtFromToken(token, userId) {
 }
 
 // get an authorization token
-app.get('/token', function(req, res) {
+app.get("/token", function(req, res) {
 
   // ensure this is all part of the same authorization chain
   if (req.cookies.authstate !== req.query.state) {
