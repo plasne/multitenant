@@ -82,6 +82,8 @@ function getAccessTokenFromCode(code) {
 function getGroupMembershipForUser(token, domain, userId) {
   var deferred = q.defer();
 
+debugger;
+
   var options = {
     uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
     json: true,
@@ -89,6 +91,7 @@ function getGroupMembershipForUser(token, domain, userId) {
       "Authorization": "Bearer " + token
     }
   };
+  
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
