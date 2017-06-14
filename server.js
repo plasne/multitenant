@@ -86,10 +86,10 @@ function getGroupMembershipForUser(token, domain, userId) {
     uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
     json: true,
     headers: {
-      "Authorization": "bearer " + token
+      "Authorization": "Bearer " + token
     }
   };
-  request.post(options, function(error, response, body) {
+  request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
         deferred.resolve(body.value);
     } else {
