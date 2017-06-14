@@ -83,13 +83,10 @@ function getGroupMembershipForUser(token, domain, userId) {
   var deferred = q.defer();
 
   var options = {
-    uri: "https://graph.windows.net/" + domain + "/users/" + userId + "/getMemberGroups?api-version=1.6",
+    uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
     json: true,
     headers: {
       "Authorization": "bearer " + token
-    },
-    body: {
-      "securityEnabledOnly": false
     }
   };
   request.post(options, function(error, response, body) {
@@ -100,32 +97,6 @@ function getGroupMembershipForUser(token, domain, userId) {
     }
   });
 
-  return deferred.promise;
-}
-
-// get the details about the groups (notably the display name) from the customer's AD
-function getGroupDetails(token, domain, groups) {
-  var deferred = q.defer();
-  
-  var options = {
-    uri: "https://graph.windows.net/" + domain + "/getObjectsByObjectIds?api-version=1.6",
-    json: true,
-    headers: {
-      "Authorization": "bearer " + token
-    },
-    body: {
-        "objectIds": groups,
-        "types": [ "group" ]
-    }
-  };
-  request.post(options, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-        deferred.resolve(body.value);
-    } else {
-        deferred.reject(JSON.stringify(body));
-    }
-  });
-  
   return deferred.promise;
 }
 
@@ -135,45 +106,40 @@ function getJwtFromToken(token, userId) {
     // get the membership for the user
     var domain = userId.split("@")[1];
     getGroupMembershipForUser(token, domain, userId).then(function(groups) {
-        
-        // get the details for each group
-        getGroupDetails(token, domain, groups).then(function(details) {
-            
-            // build a list of group names
-            var membership = [];
-            details.forEach(function(group) {
-                if (group.displayName.startsWith("testauth_")) {
-                    membership.push(group.displayName.replace("testauth_", ""));
-                }
-            });
 
-            // define rights
-            var rights = [];
-            if (membership.indexOf("admins") > -1) {
-                rights.push("can admin");
-                rights.push("can edit");
-                rights.push("can view");
-            } else if (membership.indexOf("users") > -1) {
-                rights.push("can view");
+        console.log(groups);
+                    
+        // build a list of group names
+        var membership = [];
+        details.forEach(function(group) {
+            if (group.displayName.startsWith("testauth_")) {
+                membership.push(group.displayName.replace("testauth_", ""));
             }
-
-            // build the claims
-            var claims = {
-                iss: "http://testauth.plasne.com",
-                sub: userId,
-                scope: membership,
-                rights: rights
-            };
-
-            // build the JWT
-            var jwt = nJwt.create(claims, jwtKey);
-            jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
-            deferred.resolve(jwt.compact());
-            
-        }, function(msg) {
-            deferred.reject(msg);
         });
-        
+
+        // define rights
+        var rights = [];
+        if (membership.indexOf("admins") > -1) {
+            rights.push("can admin");
+            rights.push("can edit");
+            rights.push("can view");
+        } else if (membership.indexOf("users") > -1) {
+            rights.push("can view");
+        }
+
+        // build the claims
+        var claims = {
+            iss: "http://testauth.plasne.com",
+            sub: userId,
+            scope: membership,
+            rights: rights
+        };
+
+        // build the JWT
+        var jwt = nJwt.create(claims, jwtKey);
+        jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
+        deferred.resolve(jwt.compact());
+                    
     }, function(msg) {
         deferred.reject(msg);
     });
