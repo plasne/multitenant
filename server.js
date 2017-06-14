@@ -102,7 +102,9 @@ function getGroupMembershipForUser(token, domain, userId) {
 
 function getJwtFromToken(token, userId) {
     var deferred = q.defer();
-    
+
+debugger;
+
     // get the membership for the user
     var domain = userId.split("@")[1];
     getGroupMembershipForUser(token, domain, userId).then(function(groups) {
