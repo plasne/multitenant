@@ -1,28 +1,28 @@
 
 // import everything that is required
-var config = require("config");
-var express = require("express");
-var q = require("q");
-var request = require("request");
-var crypto = require("crypto");
-var qs = require("querystring");
-var cookieParser = require("cookie-parser");
-var nJwt = require("njwt");
-var ad = require("activedirectory");
-var AuthenticationContext = require("adal-node").AuthenticationContext;
-var aadutils = require("./aadutils.js");
+const config = require("config");
+const express = require("express");
+const q = require("q");
+const request = require("request");
+const crypto = require("crypto");
+const qs = require("querystring");
+const cookieParser = require("cookie-parser");
+const nJwt = require("njwt");
+const ad = require("activedirectory");
+const AuthenticationContext = require("adal-node").AuthenticationContext;
+const aadutils = require("./aadutils.js");
 
 // get the configuration
-var port = config.get("web.port");
-var clientId = config.get("aad.clientId");
-var clientSecret = config.get("aad.clientSecret");
-var authority = config.get("aad.authority");
-var redirectUri = config.get("aad.redirectUri");
-var resource = config.get("aad.resource");
-var jwtKey = config.get("jwt.key");
+const port = config.get("web.port");
+const clientId = config.get("aad.clientId");
+const clientSecret = config.get("aad.clientSecret");
+const authority = config.get("aad.authority");
+const redirectUri = config.get("aad.redirectUri");
+const resource = config.get("aad.resource");
+const jwtKey = config.get("jwt.key");
 
 // create the web server
-var app = express();
+const app = express();
 app.use(cookieParser());
 app.use(express.static("public"));
 
@@ -57,9 +57,9 @@ app.get("/login/aad", function(req, res) {
 
 // Azure AD will first return a code that can then be converted into an access token with rights as defined for the app
 function getAccessTokenFromCode(code) {
-  var deferred = q.defer();
+  const deferred = q.defer();
 
-  var authenticationContext = new AuthenticationContext(authority);
+  const authenticationContext = new AuthenticationContext(authority);
   authenticationContext.acquireTokenWithAuthorizationCode(
     code,
     redirectUri,
@@ -80,9 +80,9 @@ function getAccessTokenFromCode(code) {
 
 // query the customer's Azure AD to find out what groups the user is a member of
 function getGroupMembershipForUser(token) {
-  var deferred = q.defer();
+  const deferred = q.defer();
 
-  var options = {
+  const options = {
     uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
     json: true,
     headers: {
@@ -102,23 +102,21 @@ function getGroupMembershipForUser(token) {
 }
 
 function getJwtFromToken(token, userId) {
-    var deferred = q.defer();
+    const deferred = q.defer();
 
     // get the membership for the user
     getGroupMembershipForUser(token).then(function(groups) {
 
-console.log("1");
-
         // build a list of group names
-        var membership = [];
-        details.forEach(function(group) {
+        const membership = [];
+        groups.forEach(function(group) {
             if (group.displayName.startsWith("testauth_")) {
                 membership.push(group.displayName.replace("testauth_", ""));
             }
         });
 
         // define rights
-        var rights = [];
+        const rights = [];
         if (membership.indexOf("admins") > -1) {
             rights.push("can admin");
             rights.push("can edit");
@@ -128,24 +126,19 @@ console.log("1");
         }
 
         // build the claims
-        var claims = {
+        const claims = {
             iss: "http://testauth.plasne.com",
             sub: userId,
             scope: membership,
             rights: rights
         };
 
-console.log("2");
-
         // build the JWT
-        var jwt = nJwt.create(claims, jwtKey);
+        const jwt = nJwt.create(claims, jwtKey);
         jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
         deferred.resolve(jwt.compact());
 
-console.log("3");
-
     }, function(msg) {
-console.log("4");
         deferred.reject(msg);
     }).done();
     
@@ -189,11 +182,11 @@ app.get("/token", function(req, res) {
 app.get("/login/ad", function(req, res) {
   
   // connect to AD
-  var adConfig = config.get("ad");
-  var client = new ad(adConfig);
+  const adConfig = config.get("ad");
+  const client = new ad(adConfig);
   
   // authenticate the user
-  var credentials = JSON.parse(req.cookies.credentials);
+  const credentials = JSON.parse(req.cookies.credentials);
   client.authenticate(credentials.username, credentials.password, function(err, auth) {
     if (err) {
         res.status(401).send(JSON.stringify(err));
@@ -250,10 +243,10 @@ app.get("/login/ad", function(req, res) {
 });
 
 function verifyToken(token) {
-  var deferred = q.defer();  
+  const deferred = q.defer();  
 
   // get the public keys
-  var options = {
+  const options = {
     uri: "https://login.microsoftonline.com/common/discovery/keys", // the key URL comes from: https://login.microsoftonline.com/<tenantId>/.well-known/openid-configuration
     json: true
   };
@@ -290,18 +283,18 @@ function verifyToken(token) {
 app.get("/login/token", function(req, res) {
     
     // verify the existing token
-    var token = req.get("Authorization").replace("Bearer ", "");
+    const token = req.get("Authorization").replace("Bearer ", "");
     verifyToken(token).then(function(verified) {
         
         // native apps cannot do admin consent, so we cannot reach back into the user's AAD, but we can generate a JWT without any special
         //   authorization and assume we do that in our application
-        var claims = {
+        const claims = {
             iss: "http://testauth.plasne.com",
             sub: verified.body.upn
         };
 
         // build the JWT
-        var jwt = nJwt.create(claims, jwtKey);
+        const jwt = nJwt.create(claims, jwtKey);
         jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
         res.status(200).send({ "accessToken": jwt.compact() });
 
