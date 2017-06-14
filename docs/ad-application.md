@@ -24,23 +24,20 @@ Once you have a verified domain you can add applications to it.
 
 To create a new Azure AD application follow these steps:
 
-1. Login to https://manage.windowsazure.com.
+1. Login to https://portal.azure.com.
 2. Click on "Active Directory" in the left-hand navigation pane.
-3. Click on the Directory that will own the application.
-4. Click on the "Applications" tab at the top.
-5. Click to "Add" an application at the bottom.
-6. Click on "Add an application my organization is developing".
-7. Provide a name for your application.
-8. Choose "Web application and/or web API".
-9. Provide a "Sign-On URL" and an "App ID URI". These can be the same thing and typically should be the URL for your web APIs. For example, for my application I chose "https://testauth.plasne.com/". **IMPORTANT:** Your Sign-On URL must end in a trailing slash and it must be a domain that you own and have verified.
-10. Click the checkmark to create the application.
-11. Click on the "Configure" tab.
-12. Click "yes" under Application is multi-tenant".
-13. Make note of the "Client ID", you will use that when you configure your server and clients.
-14. "Select duration" to create a key (also called a Client Secret).
-15. Under "permissions to other applications", "Windows Azure Active Directory", "Delegated Permissions", check "Sign in and read user profile", "Read directory data", and "Read all groups".
-16. Click on the "Save" button at the bottom.
-17. Copy the key that is generated after save under "keys". This is the Client Secret and you will need it for your server implementation. **IMPORTANT:** You cannot get this after your leave the page, so you must copy it now or create a new key later.
-
-## Notes
-- This document describes using the legacy portal. While the current Azure portal supports AAD now, there is a bug by which creating a Web App does NOT create the Service Principal and therefore acquireTokenWithClientCredentials won't work. For now, continue to use the old portal.
+3. Click on the "App registrations" tab.
+4. Click on "New application registration".
+5. Choose "Web app / API" for Application Type.
+6. Provide a name for your application.
+7. Provide a "Sign-On URL". These can be the same thing and typically should be the URL for your web APIs. For example, for my application I chose "https://testauth.plasne.com/". **IMPORTANT:** Your Sign-On URL must end in a trailing slash (I don't think this is actually a requirement any longer) and it must be a domain that you own and have verified.
+8. Click on the registered app.
+9. Click on "Settings".
+10. Click on "Required permissions".
+11. You can delete all the existing permissions. You can then add the following new permissions:
+    * Microsoft Graph - Delegated Permissions - Sign in and read user profile
+    * Microsoft Graph - Delegated Permissions - Access directory as the signed in user
+12. Click on "Properties".
+13. Click "yes" under Multi-Tenant.
+14. Click on "Keys".
+15. Create a new key. Make sure you copy this before you leave this pane.
