@@ -79,10 +79,8 @@ function getAccessTokenFromCode(code) {
 }
 
 // query the customer's Azure AD to find out what groups the user is a member of
-function getGroupMembershipForUser(token, domain, userId) {
+function getGroupMembershipForUser(token) {
   var deferred = q.defer();
-
-console.log("getGroupMembershipForUser");
 
   var options = {
     uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
@@ -94,15 +92,12 @@ console.log("getGroupMembershipForUser");
   
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-  console.log("success!!!!");
-        deferred.resolve(body.value);
+      deferred.resolve(body.value);
     } else {
-  console.log("failure!!!!");
-        deferred.reject(JSON.stringify(body));
+      deferred.reject(JSON.stringify(body));
     }
   });
 
-console.log("deferred");
   return deferred.promise;
 }
 
@@ -110,8 +105,9 @@ function getJwtFromToken(token, userId) {
     var deferred = q.defer();
 
     // get the membership for the user
-    var domain = userId.split("@")[1];
-    getGroupMembershipForUser(token, domain, userId).then(function(groups) {
+    getGroupMembershipForUser(token).then(function(groups) {
+
+console.log("1");
 
         // build a list of group names
         var membership = [];
@@ -139,14 +135,19 @@ function getJwtFromToken(token, userId) {
             rights: rights
         };
 
+console.log("2");
+
         // build the JWT
         var jwt = nJwt.create(claims, jwtKey);
         jwt.setExpiration(new Date().getTime() + (4 * 60 * 60 * 1000)); // 4 hours
         deferred.resolve(jwt.compact());
-                    
+
+console.log("3");
+
     }, function(msg) {
+console.log("4");
         deferred.reject(msg);
-    });
+    }).done();
     
     return deferred.promise;
 }
@@ -169,15 +170,16 @@ app.get("/token", function(req, res) {
         res.cookie("accessToken", jwt, {
           maxAge: 4 * 60 * 60 * 1000 // 4 hours
         });
+        console.log("redirect");
         res.redirect("/client.html");
 
       }, function(msg) {
         res.status(401).send("Unauthorized (jwt): " + msg);
-      });
+      }).done();
         
     }, function(msg) {
       res.status(401).send("Unauthorized (access token): " + msg);
-    });
+    }).done();
 
   }
   
