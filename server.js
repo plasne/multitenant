@@ -82,7 +82,7 @@ function getAccessTokenFromCode(code) {
 function getGroupMembershipForUser(token, domain, userId) {
   var deferred = q.defer();
 
-debugger;
+console.log("getGroupMembershipForUser");
 
   var options = {
     uri: "https://graph.microsoft.com/v1.0/me/memberOf?$select=displayName",
@@ -94,19 +94,20 @@ debugger;
   
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
+  console.log("success!!!!");
         deferred.resolve(body.value);
     } else {
+  console.log("failure!!!!");
         deferred.reject(JSON.stringify(body));
     }
   });
 
+console.log("deferred");
   return deferred.promise;
 }
 
 function getJwtFromToken(token, userId) {
     var deferred = q.defer();
-
-debugger;
 
     // get the membership for the user
     var domain = userId.split("@")[1];
